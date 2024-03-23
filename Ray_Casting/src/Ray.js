@@ -5,6 +5,12 @@ class Ray {
     this.mag = createVector(x_mag, y_mag);
   }
 
+  follow_mouse(x, y) {
+    this.dir.x = x - this.pos.x;
+    this.dir.y = y - this.pos.y;
+    this.dir.normalize();
+  }
+
   show() {
     stroke(255);
     push();
@@ -39,7 +45,10 @@ class Ray {
     // check if line segments t & u intercept
     //  see README for details about t & u
     if (t > 0 && t < 1 && u > 0) {
-      return true;
+      let pnt = createVector();
+      pnt.x = x1 + t * (x2 - x1);
+      pnt.y = y1 + t * (y2 - y1);
+      return pnt;
     }
 
     return;

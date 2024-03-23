@@ -12,12 +12,12 @@ function draw() {
   wall.show();
 
   ray = new Ray(200, 100, 0, 1, 10, 10);
+  ray.follow_mouse(mouseX, mouseY);
   ray.show();
-
   let intercept = ray.cast(wall);
-  console.log(intercept);
-  // if (intercept) {
-  //   fill(255);
-  //   ellipse(intercept.x, intercept.y, 8, 8);
-  // }
+
+  if (intercept) {
+    fill(255);
+    ellipse(intercept.x, intercept.y, 8, 8);
+  }
 }
