@@ -16,7 +16,6 @@ class Particle {
         const pnt = ray.cast(wall);
         if (pnt) {
           const dist = p5.Vector.dist(this.pos, pnt);
-          console.log(dist);
           if (dist < min_pnt) {
             min_pnt = dist;
             closest = pnt;

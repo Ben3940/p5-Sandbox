@@ -12,7 +12,7 @@ function setup() {
     const y2 = random(height);
     walls.push(new Wall(x1, y1, x2, y2));
   }
-  particle = new Particle();
+  particle = new Particle(5);
 }
 
 function draw() {
@@ -24,12 +24,4 @@ function draw() {
   particle.update(mouseX, mouseY);
   particle.cast(walls);
   particle.show();
-  // ray.follow_mouse(mouseX, mouseY);
-  // ray.show();
-  // let intercept = ray.cast(wall);
-
-  // if (intercept) {
-  //   fill(255);
-  //   ellipse(intercept.x, intercept.y, 8, 8);
-  // }
 }
