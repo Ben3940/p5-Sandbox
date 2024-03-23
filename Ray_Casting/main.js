@@ -1,23 +1,35 @@
 const DIM = 500;
-let wall;
-let ray;
+const NUM_WALLS = 5;
+let walls = [];
+let particle;
 
 function setup() {
   createCanvas(DIM, DIM);
+  for (let i = 0; i < NUM_WALLS; i++) {
+    const x1 = Math.random() * width;
+    const y1 = Math.random() * height;
+    const x2 = Math.random() * width;
+    const y2 = Math.random() * height;
+    walls.push(new Wall(x1, y1, x2, y2));
+  }
+  particle = new Particle();
 }
 
 function draw() {
   background(0);
-  wall = new Wall(100, 250, 400, 250);
-  wall.show();
+  walls.forEach((wall) => {
+    wall.show();
+  });
 
-  ray = new Ray(200, 100, 0, 1, 10, 10);
-  ray.follow_mouse(mouseX, mouseY);
-  ray.show();
-  let intercept = ray.cast(wall);
+  particle.update(mouseX, mouseY);
+  particle.cast(walls);
+  particle.show();
+  // ray.follow_mouse(mouseX, mouseY);
+  // ray.show();
+  // let intercept = ray.cast(wall);
 
-  if (intercept) {
-    fill(255);
-    ellipse(intercept.x, intercept.y, 8, 8);
-  }
+  // if (intercept) {
+  //   fill(255);
+  //   ellipse(intercept.x, intercept.y, 8, 8);
+  // }
 }

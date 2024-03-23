@@ -1,7 +1,7 @@
 class Ray {
-  constructor(x, y, x_dir, y_dir, x_mag, y_mag) {
-    this.pos = createVector(x, y);
-    this.dir = createVector(x_dir, y_dir);
+  constructor(pos, angle, x_mag = 1, y_mag = 1) {
+    this.pos = pos;
+    this.dir = p5.Vector.fromAngle(angle);
     this.mag = createVector(x_mag, y_mag);
   }
 
