@@ -9,13 +9,23 @@ class Particle {
   }
 
   cast(walls) {
-    walls.forEach((wall) => {
-      this.rays.forEach((ray) => {
+    this.rays.forEach((ray) => {
+      let closest = null;
+      let min_pnt = Infinity;
+      walls.forEach((wall) => {
         const pnt = ray.cast(wall);
         if (pnt) {
-          line(this.pos.x, this.pos.y, pnt.x, pnt.y);
+          const dist = p5.Vector.dist(this.pos, pnt);
+          console.log(dist);
+          if (dist < min_pnt) {
+            min_pnt = dist;
+            closest = pnt;
+          }
         }
       });
+      if (closest) {
+        line(this.pos.x, this.pos.y, closest.x, closest.y);
+      }
     });
   }
 
