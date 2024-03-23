@@ -6,4 +6,6 @@ function setup() {
 
 function draw() {
   background(0);
+  w1 = new Wall(100, 250, 250, 100);
+  w1.show();
 }

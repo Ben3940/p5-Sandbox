@@ -5,6 +5,7 @@ class Wall {
   }
 
   show() {
+    stroke(255);
     line(this.start.x, this.start.y, this.end.x, this.end.y);
   }
 }
