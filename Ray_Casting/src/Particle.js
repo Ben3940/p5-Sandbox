@@ -36,16 +36,12 @@ class Particle {
 
       // found closest wall, emit ray towards wall
       if (closest) {
-        line(this.pos.x, this.pos.y, closest.x, closest.y);
+        this.render(closest.x, closest.y);
       }
     });
   }
 
-  // Update particle position based on (x, y) coordinates
-  update(x, y) {
-    this.pos.set(x, y);
-  }
-
+  // Check key(s) pressed and move particle
   move() {
     if (keyIsDown(87) && keyIsDown(65)) {
       particle.moveUp();
@@ -70,49 +66,25 @@ class Particle {
     }
   }
 
+  // Move particle in specified direction.  max/min are used to bound particle to canvas
   moveLeft() {
-    // if (this.pos.x > 0) {
-    //   this.pos.x -= this.speed;
-    // } else {
-    //   this.pos.x = 0;
-    // }
     this.pos.x = max(this.pos.x - this.speed, 0);
   }
 
   moveRight() {
-    // console.log(this.pos.x);
-    // if (this.pos.x < width) {
-    //   this.pos.x += this.speed;
-    // } else {
-    //   this.pos.x = width;
-    // }
     this.pos.x = min(this.pos.x + this.speed, width);
   }
 
   moveUp() {
-    // if (this.pos.y > 0) {
-    //   this.pos.y -= this.speed;
-    // } else {
-    //   this.pos.y = 0;
-    // }
     this.pos.y = max(this.pos.y - this.speed, 0);
   }
 
   moveDown() {
-    // if (this.pos.y < height) {
-    //   this.pos.y += this.speed;
-    // } else {
-    //   this.pos.y = height;
-    // }
     this.pos.y = min(this.pos.y + this.speed, height);
   }
 
-  // Render particle and rays
-  show() {
-    fill(255);
-    ellipse(this.pos.x, this.pos.y, 16);
-    this.rays.forEach((ray) => {
-      ray.show();
-    });
+  // Render ray from current (x, y) to (x2, y2)
+  render(x2, y2) {
+    line(this.pos.x, this.pos.y, x2, y2);
   }
 }

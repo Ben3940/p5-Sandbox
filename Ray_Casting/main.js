@@ -32,9 +32,6 @@ function draw() {
   walls.forEach((wall) => {
     wall.show();
   });
-
-  // particle.update(mouseX, mouseY);
   particle.move();
   particle.cast(walls);
-  particle.show();
 }
