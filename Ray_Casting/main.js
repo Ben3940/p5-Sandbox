@@ -33,7 +33,8 @@ function draw() {
     wall.show();
   });
 
-  particle.update(mouseX, mouseY);
+  // particle.update(mouseX, mouseY);
+  particle.move();
   particle.cast(walls);
   particle.show();
 }

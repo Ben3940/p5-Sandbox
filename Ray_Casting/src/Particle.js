@@ -6,9 +6,10 @@
 
 class Particle {
   // Initializes rays array with a Ray object every angle_incr up to 360 degrees
-  constructor(angle_incr = 10) {
+  constructor(angle_incr = 10, speed = 5) {
     this.pos = createVector(width / 2, height / 2);
     this.rays = [];
+    this.speed = speed;
 
     for (let angle = 0; angle < 360; angle += angle_incr) {
       this.rays.push(new Ray(this.pos, radians(angle)));
@@ -43,6 +44,67 @@ class Particle {
   // Update particle position based on (x, y) coordinates
   update(x, y) {
     this.pos.set(x, y);
+  }
+
+  move() {
+    if (keyIsDown(87) && keyIsDown(65)) {
+      particle.moveUp();
+      particle.moveLeft();
+    } else if (keyIsDown(87) && keyIsDown(68)) {
+      particle.moveUp();
+      particle.moveRight();
+    } else if (keyIsDown(83) && keyIsDown(65)) {
+      particle.moveDown();
+      particle.moveLeft();
+    } else if (keyIsDown(83) && keyIsDown(68)) {
+      particle.moveDown();
+      particle.moveRight();
+    } else if (keyIsDown(65)) {
+      particle.moveLeft();
+    } else if (keyIsDown(68)) {
+      particle.moveRight();
+    } else if (keyIsDown(87)) {
+      particle.moveUp();
+    } else if (keyIsDown(83)) {
+      particle.moveDown();
+    }
+  }
+
+  moveLeft() {
+    // if (this.pos.x > 0) {
+    //   this.pos.x -= this.speed;
+    // } else {
+    //   this.pos.x = 0;
+    // }
+    this.pos.x = max(this.pos.x - this.speed, 0);
+  }
+
+  moveRight() {
+    // console.log(this.pos.x);
+    // if (this.pos.x < width) {
+    //   this.pos.x += this.speed;
+    // } else {
+    //   this.pos.x = width;
+    // }
+    this.pos.x = min(this.pos.x + this.speed, width);
+  }
+
+  moveUp() {
+    // if (this.pos.y > 0) {
+    //   this.pos.y -= this.speed;
+    // } else {
+    //   this.pos.y = 0;
+    // }
+    this.pos.y = max(this.pos.y - this.speed, 0);
+  }
+
+  moveDown() {
+    // if (this.pos.y < height) {
+    //   this.pos.y += this.speed;
+    // } else {
+    //   this.pos.y = height;
+    // }
+    this.pos.y = min(this.pos.y + this.speed, height);
   }
 
   // Render particle and rays
