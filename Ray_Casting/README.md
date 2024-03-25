@@ -1,5 +1,7 @@
 # Ray Casting
 
+## Description (Math Involved)
+
 This demo explores the topic of **ray casting**. There is a single `Particle` class that emits `Rays` towards bounding `Walls`. The calculations associated with casting `Rays` is based on this wikipedia page:
 
 https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
@@ -17,7 +19,7 @@ The wiki page constrains _t_ and _u_ to:
 $0 < t < 1 $  
 $0 < u < 1 $
 
-However, for this application, _u_ is associated with line segment representing a `Ray`. This means that _u_ is actually constrain to:
+However, for this application, _u_ is associated with line segment representing a `Ray`. This means that _u_ is actually constrained to:
 
 $0 < u$
 
