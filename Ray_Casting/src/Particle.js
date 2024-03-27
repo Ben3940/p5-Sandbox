@@ -1,13 +1,21 @@
 /**
  * Particle Class
  *
- *   Emits rays in 360 degrees, every angle_incr degrees.  A wrapper cast() function to call individual ray casts.  Update() called to move particle based on mouse position.  Show() renders the particle class to the canvas.
+ *   Emits rays in 360 degrees, every angle_incr degrees.  Has a wrapper cast() function to call individual Ray casts.  move() called to move Particle based on WASD key presses.  Show() renders the Particle class to the canvas.
  */
+
+// Variables to make movement control code more readable
+const W = 87;
+const A = 65;
+const S = 83;
+const D = 68;
+const ARROW_LEFT = 37;
+const ARROW_RIGHT = 39;
 
 class Particle {
   // Initializes rays array with a Ray object every angle_incr up to 360 degrees
   constructor(
-    angle_incr = 5,
+    angle_incr = 0.1,
     speed = 5,
     FOV = 0,
     angle_offset = 0,
@@ -21,6 +29,7 @@ class Particle {
     this.angle_offset = angle_offset;
     this.rotate_speed = rotate_speed;
 
+    // Rays generated differently based on if FOV is specified
     if (this.FOV) {
       this.generate_rays_FOV();
     } else {
@@ -56,33 +65,51 @@ class Particle {
 
   // Check key(s) pressed and move particle
   move() {
-    if (keyIsDown(37)) {
-      this.rotateLeft();
-      this.generate_rays_FOV();
-    } else if (keyIsDown(39)) {
-      this.rotateRight();
-      this.generate_rays_FOV();
+    // If FOV, then allow particle to rotate
+    if (this.FOV) {
+      if (keyIsDown(ARROW_LEFT)) {
+        this.rotateLeft();
+        this.generate_rays_FOV();
+      } else if (keyIsDown(ARROW_RIGHT)) {
+        this.rotateRight();
+        this.generate_rays_FOV();
+      }
     }
 
-    if (keyIsDown(87) && keyIsDown(65)) {
+    // Diagonal up left
+    if (keyIsDown(W) && keyIsDown(A)) {
       this.moveUp();
       this.moveLeft();
-    } else if (keyIsDown(87) && keyIsDown(68)) {
+
+      // Diagonal up right
+    } else if (keyIsDown(W) && keyIsDown(D)) {
       this.moveUp();
       this.moveRight();
-    } else if (keyIsDown(83) && keyIsDown(65)) {
+
+      // Diagonal down left
+    } else if (keyIsDown(S) && keyIsDown(A)) {
       this.moveDown();
       this.moveLeft();
-    } else if (keyIsDown(83) && keyIsDown(68)) {
+
+      // Diagonal down right
+    } else if (keyIsDown(S) && keyIsDown(D)) {
       this.moveDown();
       this.moveRight();
-    } else if (keyIsDown(65)) {
+
+      // left
+    } else if (keyIsDown(A)) {
       this.moveLeft();
-    } else if (keyIsDown(68)) {
+
+      // right
+    } else if (keyIsDown(D)) {
       this.moveRight();
-    } else if (keyIsDown(87)) {
+
+      // up
+    } else if (keyIsDown(W)) {
       this.moveUp();
-    } else if (keyIsDown(83)) {
+
+      // down
+    } else if (keyIsDown(S)) {
       this.moveDown();
     }
   }
