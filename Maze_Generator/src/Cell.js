@@ -4,6 +4,11 @@ class Cell {
     this.j = j;
     this.w = w;
     this.walls = [true, true, true, true];
+    this.visited = false;
+  }
+
+  set_visit(visit_state) {
+    this.visited = visit_state;
   }
 
   create_walls() {
@@ -29,6 +34,11 @@ class Cell {
     // Left wall
     if (this.walls[3]) {
       line(x, y, x, y + this.w);
+    }
+
+    if (this.visited) {
+      fill(0, 180, 230);
+      rect(this.i * this.w, this.j * this.w, this.w);
     }
   }
 }

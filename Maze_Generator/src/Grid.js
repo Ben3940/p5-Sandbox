@@ -4,6 +4,7 @@ class Grid {
     this.cols = cols;
     this.cell_width = cell_width;
     this.grid = [];
+    this.current;
   }
 
   initialize() {
@@ -13,11 +14,13 @@ class Grid {
         this.grid.push(cell);
       }
     }
+    this.current = this.grid[0];
   }
 
   show() {
     noFill();
     stroke(255);
+    this.current.set_visit(true);
     this.grid.forEach((cell) => {
       cell.create_walls();
     });
