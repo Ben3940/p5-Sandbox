@@ -9,11 +9,7 @@ class Grid {
   initialize() {
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.cols; j++) {
-        const cell = new Cell(
-          i * this.cell_width,
-          j * this.cell_width,
-          this.cell_width
-        );
+        const cell = new Cell(i, j, this.cell_width);
         this.grid.push(cell);
       }
     }
@@ -23,7 +19,7 @@ class Grid {
     noFill();
     stroke(255);
     this.grid.forEach((cell) => {
-      cell.show();
+      cell.create_walls();
     });
   }
 }
