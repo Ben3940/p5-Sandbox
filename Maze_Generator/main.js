@@ -11,6 +11,8 @@ function setup() {
 }
 
 function draw() {
+  stroke(255);
   background(0);
   grid.show();
+  frameRate(5);
 }

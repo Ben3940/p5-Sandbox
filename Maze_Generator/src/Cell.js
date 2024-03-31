@@ -14,12 +14,24 @@ class Cell {
     this.visited = false;
   }
 
+  get_i() {
+    return this.i;
+  }
+
+  get_j() {
+    return this.j;
+  }
+
   get_visited() {
     return this.visited;
   }
 
   set_visited(visit_bool) {
     this.visited = visit_bool;
+  }
+
+  set_wall(pos, state) {
+    this.walls[pos] = state;
   }
 
   check_neighbors(grid) {
@@ -69,7 +81,30 @@ class Cell {
     }
   }
 
+  remove_walls(neighbor) {
+    const x = this.i - neighbor.get_i();
+
+    if (x === -1) {
+      this.walls['right'] = false;
+      neighbor.set_wall('left', false);
+    } else if (x === 1) {
+      this.walls['left'] = false;
+      neighbor.set_wall('right', false);
+    }
+
+    const y = this.j - neighbor.get_j();
+
+    if (y === -1) {
+      this.walls['bottom'] = false;
+      neighbor.set_wall('top', false);
+    } else if (y === 1) {
+      this.walls['top'] = false;
+      neighbor.set_wall('bottom', false);
+    }
+  }
+
   create_walls() {
+    stroke(255);
     // rect(this.i, this.j, this.w);
     const x = this.i * this.w;
     const y = this.j * this.w;
@@ -95,6 +130,7 @@ class Cell {
     }
 
     if (this.visited) {
+      noStroke();
       fill(0, 180, 230);
       rect(this.i * this.w, this.j * this.w, this.w);
     }
