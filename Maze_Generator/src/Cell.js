@@ -1,14 +1,72 @@
 class Cell {
-  constructor(i, j, w) {
+  constructor(i, j, w, cols, rows) {
     this.i = i;
     this.j = j;
     this.w = w;
-    this.walls = [true, true, true, true];
+    this.walls = {
+      top: true,
+      right: true,
+      bottom: true,
+      left: true,
+    };
+    this.cols = cols;
+    this.rows = rows;
     this.visited = false;
   }
 
-  set_visit(visit_state) {
-    this.visited = visit_state;
+  get_visited() {
+    return this.visited;
+  }
+
+  set_visited(visit_bool) {
+    this.visited = visit_bool;
+  }
+
+  check_neighbors(grid) {
+    let neighbors = [];
+
+    // Get surrounding cells' 1D indicies
+    const top = grid[this.convert_coordinates_to_index(this.i, this.j - 1)];
+    const right = grid[this.convert_coordinates_to_index(this.i + 1, this.j)];
+    const bottom = grid[this.convert_coordinates_to_index(this.i, this.j + 1)];
+    const left = grid[this.convert_coordinates_to_index(this.i - 1, this.j)];
+
+    if (top && !top.get_visited()) {
+      neighbors.push(top);
+    }
+    if (right && !right.get_visited()) {
+      neighbors.push(right);
+    }
+    if (bottom && !bottom.get_visited()) {
+      neighbors.push(bottom);
+    }
+    if (left && !left.get_visited()) {
+      neighbors.push(left);
+    }
+
+    return this.select_neighbor(neighbors);
+  }
+
+  // Convert (x,y) coordinates to 1D-array index
+  convert_coordinates_to_index(i, j) {
+    if (this.check_coordinate_bounds(i, j)) {
+      return j + i * this.cols;
+    }
+    return -1;
+  }
+
+  check_coordinate_bounds(i, j) {
+    if (i < 0 || j < 0 || i > this.rows - 1 || j > this.cols - 1) {
+      return 0;
+    }
+    return 1;
+  }
+
+  select_neighbor(neighbors) {
+    if (neighbors.length > 0) {
+      let rand_idx = floor(random(0, neighbors.length));
+      return neighbors[rand_idx];
+    }
   }
 
   create_walls() {
@@ -17,22 +75,22 @@ class Cell {
     const y = this.j * this.w;
 
     // Top wall
-    if (this.walls[0]) {
+    if (this.walls['top']) {
       line(x, y, x + this.w, y);
     }
 
     // Right wall
-    if (this.walls[1]) {
+    if (this.walls['right']) {
       line(x + this.w, y, x + this.w, y + this.w);
     }
 
     // Bottom wall
-    if (this.walls[2]) {
+    if (this.walls['bottom']) {
       line(x, y + this.w, x + this.w, y + this.w);
     }
 
     // Left wall
-    if (this.walls[3]) {
+    if (this.walls['left']) {
       line(x, y, x, y + this.w);
     }
 
