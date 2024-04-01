@@ -33,6 +33,8 @@ class Grid {
 
     this.grid.forEach((cell) => {
       cell.create_walls();
+      cell.show_if_visited();
     });
+    this.current.show_current();
   }
 }

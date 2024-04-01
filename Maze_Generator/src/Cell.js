@@ -128,11 +128,19 @@ class Cell {
     if (this.walls['left']) {
       line(x, y, x, y + this.w);
     }
+  }
 
+  show_if_visited() {
     if (this.visited) {
       noStroke();
       fill(0, 180, 230);
       rect(this.i * this.w, this.j * this.w, this.w);
     }
+  }
+
+  show_current() {
+    noStroke();
+    fill(230, 180, 0);
+    rect(this.i * this.w, this.j * this.w, this.w);
   }
 }
