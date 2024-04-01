@@ -5,6 +5,7 @@ class Grid {
     this.cell_width = cell_width;
     this.grid = [];
     this.current;
+    this.stack = [];
   }
 
   initialize() {
@@ -25,15 +26,19 @@ class Grid {
     const next = this.current.check_neighbors(this.grid);
     if (next) {
       next.set_visited(true);
-
+      this.stack.push(this.current);
       this.current.remove_walls(next);
-
       this.current = next;
+
+      // If next is not defined and items are on the stack,
+      //   pop from stack to back track to cell with neighbors to visit
+    } else if (this.stack.length > 0) {
+      this.current = this.stack.pop();
     }
 
     this.grid.forEach((cell) => {
       cell.create_walls();
-      cell.show_if_visited();
+      //cell.show_if_visited();
     });
     this.current.show_current();
   }
