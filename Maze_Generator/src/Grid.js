@@ -40,6 +40,13 @@ class Grid {
     this.grid.forEach((cell) => {
       cell.create_walls();
       cell.show_if_visited();
+      if (cell.get_visited()) {
+        cell.decrease_occurance_color();
+      }
+
+      if (this.stack.length <= 0) {
+        cell.occurance_color_drain();
+      }
     });
     this.current.show_current();
   }

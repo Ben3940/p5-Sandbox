@@ -13,7 +13,7 @@ class Cell {
     this.rows = rows;
     this.visited = false;
     this.occurance_color = 20;
-    this.color_increase = 30;
+    this.color_increase = 25;
   }
 
   get_i() {
@@ -135,6 +135,13 @@ class Cell {
   increase_occurance_color() {
     this.occurance_color += this.color_increase;
   }
+  decrease_occurance_color() {
+    this.occurance_color = max(0, this.occurance_color - 0.3);
+  }
+
+  occurance_color_drain() {
+    this.occurance_color -= 1;
+  }
 
   show_if_visited() {
     // if (this.visited) {
@@ -146,9 +153,9 @@ class Cell {
     if (this.visited) {
       noStroke();
       fill(
-        this.occurance_color,
-        0.5 * this.occurance_color,
-        2 * this.occurance_color
+        2.5 * this.occurance_color,
+        1.9 * this.occurance_color,
+        0.5 * this.occurance_color
       );
       rect(this.i * this.w, this.j * this.w, this.w);
     }
