@@ -1,6 +1,6 @@
-const DIM = 800;
-const COLS = 25;
-const ROWS = 25;
+const DIM = 900;
+const COLS = 10;
+const ROWS = 10;
 const CELL_WIDTH = DIM / COLS;
 let grid;
 

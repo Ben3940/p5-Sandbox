@@ -34,11 +34,12 @@ class Grid {
       //   pop from stack to back track to cell with neighbors to visit
     } else if (this.stack.length > 0) {
       this.current = this.stack.pop();
+      this.current.increase_occurance_color();
     }
 
     this.grid.forEach((cell) => {
       cell.create_walls();
-      //cell.show_if_visited();
+      cell.show_if_visited();
     });
     this.current.show_current();
   }
