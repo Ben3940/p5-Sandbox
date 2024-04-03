@@ -36,6 +36,7 @@ class Cell {
     this.walls[pos] = state;
   }
 
+  // Check neighboring cells to see which ones are not visited yet, move to one of them next
   check_neighbors(grid) {
     let neighbors = [];
 
@@ -45,6 +46,7 @@ class Cell {
     const bottom = grid[this.convert_coordinates_to_index(this.i, this.j + 1)];
     const left = grid[this.convert_coordinates_to_index(this.i - 1, this.j)];
 
+    // If neighbor exists and not yet visited, push to neighbors array
     if (top && !top.get_visited()) {
       neighbors.push(top);
     }
@@ -69,6 +71,7 @@ class Cell {
     return -1;
   }
 
+  // Confirms if row index (i) and column index (j) are within grid bounds
   check_coordinate_bounds(i, j) {
     if (i < 0 || j < 0 || i > this.rows - 1 || j > this.cols - 1) {
       return 0;
@@ -76,6 +79,7 @@ class Cell {
     return 1;
   }
 
+  // Given array of neighboring cells, select one to move to
   select_neighbor(neighbors) {
     if (neighbors.length > 0) {
       let rand_idx = floor(random(0, neighbors.length));
@@ -83,12 +87,16 @@ class Cell {
     }
   }
 
+  // Remove appropriate walls between this cell and neighbor
   remove_walls(neighbor) {
     const x = this.i - neighbor.get_i();
 
+    // Neighbor is to the right, remove neighbor's left wall and this cell's right wall
     if (x === -1) {
       this.walls['right'] = false;
       neighbor.set_wall('left', false);
+
+      // Neighbor is to the left, remove neighbor's right wall and this cell's left wall
     } else if (x === 1) {
       this.walls['left'] = false;
       neighbor.set_wall('right', false);
@@ -96,18 +104,21 @@ class Cell {
 
     const y = this.j - neighbor.get_j();
 
+    // Neighbor below, remove neighbor's top wall and this cell's bottom wall
     if (y === -1) {
       this.walls['bottom'] = false;
       neighbor.set_wall('top', false);
+
+      // Neighbor above, remove neighbor's bottom wall and this cell's top wall
     } else if (y === 1) {
       this.walls['top'] = false;
       neighbor.set_wall('bottom', false);
     }
   }
 
+  // Render walls of cell
   create_walls() {
     stroke(255);
-    // rect(this.i, this.j, this.w);
     const x = this.i * this.w;
     const y = this.j * this.w;
 
@@ -132,6 +143,7 @@ class Cell {
     }
   }
 
+  // Methods for controling intensity of color to indicate visit occurances
   increase_occurance_color() {
     this.occurance_color += this.color_increase;
   }
@@ -143,7 +155,9 @@ class Cell {
     this.occurance_color -= 1;
   }
 
+  // Called every frame, update's occurance_color and gives 'heat-map' of cells being visited
   show_if_visited() {
+    // Show without 'heat-map'
     // if (this.visited) {
     //   noStroke();
     //   fill(0, 180, 230);
@@ -161,6 +175,7 @@ class Cell {
     }
   }
 
+  // Render current cell of algorithm a different color
   show_current() {
     noStroke();
     fill(230, 180, 0);
