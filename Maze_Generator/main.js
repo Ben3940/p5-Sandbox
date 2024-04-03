@@ -1,6 +1,6 @@
-const DIM = 500;
-const COLS = 10;
-const ROWS = 10;
+const DIM = 900;
+const COLS = 25;
+const ROWS = 25;
 const CELL_WIDTH = DIM / COLS;
 let grid;
 
@@ -11,6 +11,7 @@ function setup() {
 }
 
 function draw() {
+  stroke(255);
   background(0);
   grid.show();
 }
