@@ -35,10 +35,6 @@ function populate_cells() {
 function update_cells() {
   let next_cells = [cells[0]];
   for (let i = 1; i < cells.length - 1; i++) {
-    // const left = cells[i - 1];
-    // const middle = cells[i];
-    // const right = cells[i + 1];
-
     const seq = cells.slice(i - 1, i + 2);
     next_cells.push(rule_set(178, seq));
   }
@@ -47,10 +43,6 @@ function update_cells() {
 }
 
 function rule_set(rule, seq) {
-  if (seq.join('') === '010') {
-    console.log('Hit');
-  }
   let value = 7 - parseInt(seq.join(''), 2);
-  console.log(rulesets[rule][value]);
   return rulesets[rule][value];
 }
