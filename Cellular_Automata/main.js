@@ -12,7 +12,12 @@ function setup() {
 function draw() {
   for (let i = 0; i < cells.length; i++) {
     stroke(0);
-    fill(255 * cells[i]);
+    // fill(255 * cells[i]);
+    if (cells[i][0]) {
+      fill(cells[i][1][0], cells[i][1][1], cells[i][1][2]);
+    } else {
+      fill(0);
+    }
     square(i * w, y, w);
   }
   y += w;
@@ -29,9 +34,9 @@ function populate_cells() {
   total_cells = width / w;
   for (let i = 0; i < total_cells; i++) {
     if (i === floor(total_cells / 2) - 1) {
-      cells[i] = 1;
+      cells[i] = [1, [255, 255, 255]];
     } else {
-      cells[i] = 0;
+      cells[i] = [0, [0, 0, 0]];
     }
   }
 }
@@ -40,9 +45,9 @@ function update_cells() {
   const len = cells.length;
   let next_cells = [];
   for (let i = 0; i < len; i++) {
-    const left = cells[(i - 1 + len) % len];
-    const middle = cells[i];
-    const right = cells[(i + 1 + len) % len];
+    const left = cells[(i - 1 + len) % len][0];
+    const middle = cells[i][0];
+    const right = cells[(i + 1 + len) % len][0];
     next_cells.push(apply_rule_set([left, middle, right]));
   }
   cells = next_cells;
@@ -67,6 +72,17 @@ function generate_rule_set() {
 }
 
 function apply_rule_set(seq) {
-  let value = 7 - parseInt(seq.join(''), 2);
-  return ruleset[value];
+  const value = 7 - parseInt(seq.join(''), 2);
+  const cell_state = ruleset[value];
+  let cell_color;
+
+  if (value >= 0 && value < 2) {
+    cell_color = [85, 105, 205];
+  } else if (value >= 2 && value < 5) {
+    cell_color = [125, 25, 255];
+  } else {
+    cell_color = [25, 255, 125];
+  }
+
+  return [cell_state, cell_color];
 }
