@@ -1,10 +1,10 @@
-const DIM = 900;
+const DIM = 1800;
 let cells = [];
-const w = 10;
+const w = 5;
 let y;
 let ruleset;
 function setup() {
-  createCanvas(DIM, DIM * 3);
+  createCanvas(DIM, DIM * 2);
   initialize_canvas();
   generate_rule_set();
 }
@@ -28,7 +28,7 @@ function initialize_canvas() {
 function populate_cells() {
   total_cells = width / w;
   for (let i = 0; i < total_cells; i++) {
-    if (i === floor(total_cells / 2) - 2) {
+    if (i === floor(total_cells / 2) - 1) {
       cells[i] = 1;
     } else {
       cells[i] = 0;
@@ -37,15 +37,14 @@ function populate_cells() {
 }
 
 function update_cells() {
-  let temp_seq = cells.slice(-1).concat(cells.slice(0, 2));
-  let next_cells = [apply_rule_set(temp_seq)];
-  for (let i = 1; i < cells.length - 1; i++) {
-    const seq = cells.slice(i - 1, i + 2);
-    next_cells.push(apply_rule_set(seq));
+  const len = cells.length;
+  let next_cells = [];
+  for (let i = 0; i < len; i++) {
+    const left = cells[(i - 1 + len) % len];
+    const middle = cells[i];
+    const right = cells[(i + 1 + len) % len];
+    next_cells.push(apply_rule_set([left, middle, right]));
   }
-  temp_seq = cells.slice(-2).concat(cells[0]);
-
-  next_cells.push(apply_rule_set(temp_seq));
   cells = next_cells;
 }
 
