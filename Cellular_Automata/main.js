@@ -14,7 +14,7 @@ function draw() {
     stroke(0);
     // fill(255 * cells[i]);
     if (cells[i][0]) {
-      fill(cells[i][1][0], cells[i][1][1], cells[i][1][2]);
+      fill(cells[i][1]['R'], cells[i][1]['G'], cells[i][1]['B']);
     } else {
       fill(0);
     }
@@ -34,9 +34,9 @@ function populate_cells() {
   total_cells = width / w;
   for (let i = 0; i < total_cells; i++) {
     if (i === floor(total_cells / 2) - 1) {
-      cells[i] = [1, [255, 255, 255]];
+      cells[i] = [1, { R: 255, G: 255, B: 255 }];
     } else {
-      cells[i] = [0, [0, 0, 0]];
+      cells[i] = [0, { R: 0, G: 0, B: 0 }];
     }
   }
 }
@@ -74,15 +74,43 @@ function generate_rule_set() {
 function apply_rule_set(seq) {
   const value = 7 - parseInt(seq.join(''), 2);
   const cell_state = ruleset[value];
-  let cell_color;
-
-  if (value >= 0 && value < 2) {
-    cell_color = [85, 105, 205];
-  } else if (value >= 2 && value < 5) {
-    cell_color = [125, 25, 255];
-  } else {
-    cell_color = [25, 255, 125];
-  }
+  let cell_color = assign_color(value);
 
   return [cell_state, cell_color];
+}
+
+function assign_color(value) {
+  let cell_color = {
+    R: 0,
+    G: 0,
+    B: 0,
+  };
+
+  switch (value) {
+    case 0:
+    case 1:
+      cell_color['R'] = 242;
+      cell_color['G'] = 95;
+      cell_color['B'] = 93;
+
+      break;
+    case 2:
+    case 3:
+    case 4:
+      cell_color['R'] = 45;
+      cell_color['G'] = 105;
+      cell_color['B'] = 225;
+      break;
+    case 5:
+      cell_color['R'] = 167;
+      cell_color['G'] = 176;
+      cell_color['B'] = 202;
+      break;
+    default:
+      cell_color['R'] = 98;
+      cell_color['G'] = 60;
+      cell_color['B'] = 234;
+      break;
+  }
+  return cell_color;
 }
