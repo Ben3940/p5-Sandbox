@@ -39,3 +39,7 @@ NOTE: '111' is 7 in binary. In the apply_rule_set() the line
     const value = 7 - parseInt(seq.join(''), 2);
 
 Reverses the index value since it is subtracting the sequence value ('111' or 7 in this case) from 7. So '111' corresponds with index 0 for the array that stores the individual bits of the binary number.
+
+### Determining Cell Color
+
+Once a new cell state is determined and an array index is calculated to select the appropriate "new state", the cells are assigned colors based on these index values. A JS object containing the red (R), green (G), blue (B) color components is created with values depending on the arrya index computed for the given cell. When cells are rendered to the screen they are also color coded to indicate which rule assigned their current cell state.
