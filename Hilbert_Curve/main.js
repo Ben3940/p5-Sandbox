@@ -1,5 +1,5 @@
 const DIM = 500;
-const ORDER = 1;
+const ORDER = 2;
 const N = 2 ** ORDER;
 const TOTAL = N ** 2;
 const PATH = [];
@@ -20,13 +20,19 @@ function draw() {
   background(0);
   stroke(255);
   noFill();
-  strokeWeight(4);
 
   beginShape();
   for (let i = 0; i < PATH.length; i++) {
     vertex(PATH[i].x, PATH[i].y);
+    show_number(i, PATH[i].x, PATH[i].y);
   }
   endShape();
+}
+
+// Displays ith index along hilbert curve at location x, y
+function show_number(i, x, y) {
+  text(i, x + 5, y - 5);
+  point(x, y);
 }
 
 function hilbert_x_y(i) {
@@ -36,5 +42,30 @@ function hilbert_x_y(i) {
     createVector(1, 1),
     createVector(1, 0),
   ];
-  return points[i];
+
+  // Focus on right-most 2 bits of i as a binary number (i.e. 00, 01, 10, 11);
+  let index = i & 3;
+  let vec = points[index];
+
+  // Shift bits right by 2 bits
+  i = i >>> 2;
+  // Focus on newly shifted, right-most 2 bits of i as a binary number
+  index = i & 3;
+
+  switch (index) {
+    case 0:
+      break;
+    case 1:
+      vec.y++;
+      break;
+    case 2:
+      vec.x++;
+      vec.y++;
+      break;
+    case 3:
+      vec.x++;
+      break;
+  }
+
+  return vec;
 }
