@@ -52,9 +52,10 @@ function hilbert_x_y(i) {
   // Focus on newly shifted, right-most 2 bits of i as a binary number
   index = i & 3;
 
+  let temp;
   switch (index) {
     case 0:
-      let temp = vec.x;
+      temp = vec.x;
       vec.x = vec.y;
       vec.y = temp;
       break;
@@ -66,6 +67,9 @@ function hilbert_x_y(i) {
       vec.y += ORDER;
       break;
     case 3:
+      temp = 1 - vec.y;
+      vec.y = 1 - vec.x;
+      vec.x = temp;
       vec.x += ORDER;
       break;
   }
