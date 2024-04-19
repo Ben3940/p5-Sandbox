@@ -54,16 +54,19 @@ function hilbert_x_y(i) {
 
   switch (index) {
     case 0:
+      let temp = vec.x;
+      vec.x = vec.y;
+      vec.y = temp;
       break;
     case 1:
-      vec.y++;
+      vec.y += ORDER;
       break;
     case 2:
-      vec.x++;
-      vec.y++;
+      vec.x += ORDER;
+      vec.y += ORDER;
       break;
     case 3:
-      vec.x++;
+      vec.x += ORDER;
       break;
   }
 
