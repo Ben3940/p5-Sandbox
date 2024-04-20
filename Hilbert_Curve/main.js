@@ -1,5 +1,5 @@
-const DIM = 500;
-const ORDER = 2;
+const DIM = 900;
+const ORDER = 4;
 const N = 2 ** ORDER;
 const TOTAL = N ** 2;
 const PATH = [];
@@ -24,7 +24,9 @@ function draw() {
   beginShape();
   for (let i = 0; i < PATH.length; i++) {
     vertex(PATH[i].x, PATH[i].y);
-    show_number(i, PATH[i].x, PATH[i].y);
+    if (ORDER < 6) {
+      show_number(i, PATH[i].x, PATH[i].y);
+    }
   }
   endShape();
 }
@@ -47,31 +49,35 @@ function hilbert_x_y(i) {
   let index = i & 3;
   let vec = points[index];
 
-  // Shift bits right by 2 bits
-  i = i >>> 2;
-  // Focus on newly shifted, right-most 2 bits of i as a binary number
-  index = i & 3;
+  for (let j = 1; j < ORDER; j++) {
+    // Shift bits right by 2 bits
+    i = i >>> 2;
+    // Focus on newly shifted, right-most 2 bits of i as a binary number
+    index = i & 3;
 
-  let temp;
-  switch (index) {
-    case 0:
-      temp = vec.x;
-      vec.x = vec.y;
-      vec.y = temp;
-      break;
-    case 1:
-      vec.y += ORDER;
-      break;
-    case 2:
-      vec.x += ORDER;
-      vec.y += ORDER;
-      break;
-    case 3:
-      temp = 1 - vec.y;
-      vec.y = 1 - vec.x;
-      vec.x = temp;
-      vec.x += ORDER;
-      break;
+    let temp;
+    let len = 2 ** j;
+
+    switch (index) {
+      case 0:
+        temp = vec.x;
+        vec.x = vec.y;
+        vec.y = temp;
+        break;
+      case 1:
+        vec.y += len;
+        break;
+      case 2:
+        vec.x += len;
+        vec.y += len;
+        break;
+      case 3:
+        temp = len - 1 - vec.y;
+        vec.y = len - 1 - vec.x;
+        vec.x = temp;
+        vec.x += len;
+        break;
+    }
   }
 
   return vec;
