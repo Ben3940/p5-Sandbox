@@ -1,5 +1,5 @@
 const DIM = 900;
-const ORDER = 4;
+const ORDER = 8;
 const N = 2 ** ORDER;
 const TOTAL = N ** 2;
 const PATH = [];
@@ -22,13 +22,17 @@ function draw() {
   noFill();
 
   beginShape();
-  for (let i = 0; i < PATH.length; i++) {
+  for (let i = 0; i < COUNTER; i++) {
     vertex(PATH[i].x, PATH[i].y);
     if (ORDER < 6) {
       show_number(i, PATH[i].x, PATH[i].y);
     }
   }
   endShape();
+  COUNTER += 20;
+  if (COUNTER >= PATH.length) {
+    COUNTER = 0;
+  }
 }
 
 // Displays ith index along hilbert curve at location x, y
