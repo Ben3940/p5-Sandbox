@@ -1,12 +1,14 @@
 const DIM = 900;
-const ORDER = 8;
+const ORDER = 10;
 const N = 2 ** ORDER;
 const TOTAL = N ** 2;
 const PATH = [];
 let COUNTER = 0;
+let HUE = 0;
 
 function setup() {
   createCanvas(DIM, DIM);
+  colorMode(HSB, 360, 255, 255);
   let vec;
   for (let i = 0; i < TOTAL; i++) {
     vec = hilbert_x_y(i);
@@ -15,25 +17,28 @@ function setup() {
     vec.add(len / 2, len / 2);
     PATH[i] = vec;
   }
-}
-function draw() {
+
   background(0);
   stroke(255);
   noFill();
 
-  beginShape();
-  for (let i = 0; i < COUNTER; i++) {
-    vertex(PATH[i].x, PATH[i].y);
+  for (let i = 1; i < PATH.length; i++) {
+    // vertex(PATH[i].x, PATH[i].y);
+    HUE = map(i, 0, PATH.length, 0, 360);
+    stroke(HUE, 255, 255);
+    line(PATH[i].x, PATH[i].y, PATH[i - 1].x, PATH[i - 1].y);
+
     if (ORDER < 6) {
       show_number(i, PATH[i].x, PATH[i].y);
     }
   }
-  endShape();
-  COUNTER += 20;
+
+  COUNTER += 40;
   if (COUNTER >= PATH.length) {
     COUNTER = 0;
   }
 }
+function draw() {}
 
 // Displays ith index along hilbert curve at location x, y
 function show_number(i, x, y) {
