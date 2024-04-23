@@ -17,4 +17,14 @@ With the Hilbert curve, there is also the notion of _fractal_ generation. The
 
 ## Main.js
 
+#### Gloabal Variables
+
 The **ORDER** global variable specifies the order for the Hilbert curve to render. **N** is the number of points along the length/width of the unit square, and **TOTAL** is the total number of points within the unit square. **PATH** keeps track of the vectors that will be represented as line between points and the order in which the curve passes through them. **COUNTER** is the step-size that the curve is generated at per call to _draw()_. Once **COUNTER** reaches _PATH.length_ then the entire curve has been drawn and the program restarts. **HUE** holds the color values (as an HSB value) for the different stroke colors for the lines that make up the curve.
+
+#### Functions
+
+In setup() the canvas is created and the PATH array is populated with vectors (or lines, in other words) whose (x, y) coordinates are generated based on the value of _i_. The vectors are then transformed by multiplying by _len_ (the length of one row in the unit square) and adding half the length to push the vector's tail to the center, instead of the tail being in the top-left corner.
+
+In draw() vectors from _i_ to _i_ = COUNTER - 1 are rendered at once. The HUE for the vectors are calculated based on the _ith_ positioning mapped to the range [0, 360]. With each successive call to draw(), COUNTER is incremented so that more lines are drawn at once. Until counter is equal or greater than PATH.length (the total number of vectors), in which case, COUNTER is reset to 0.
+
+In hilbert_x_y(i), a index, _i_, is given as a decimal number. Using "i & 3" converts i to a binary number and bit masks it with the number 3, converted to binary as well (so 0111, using only 4 bits). By doing so we focus on only the 2 right-most bits of i as a binary number. This results in either 00, 01, 10, 11 which is 0, 1, 2, and 3 as decimal values. From this we can grab the fundamental vector from _points_ to determine which vector to render at this _ith_ index along the Hilbert curve.

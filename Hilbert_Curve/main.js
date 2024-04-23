@@ -1,5 +1,5 @@
 const DIM = 900;
-const ORDER = 10;
+const ORDER = 6;
 const N = 2 ** ORDER;
 const TOTAL = N ** 2;
 const PATH = [];
@@ -17,28 +17,28 @@ function setup() {
     vec.add(len / 2, len / 2);
     PATH[i] = vec;
   }
-
+}
+function draw() {
   background(0);
   stroke(255);
   noFill();
 
-  for (let i = 1; i < PATH.length; i++) {
+  for (let i = 1; i < COUNTER; i++) {
     // vertex(PATH[i].x, PATH[i].y);
     HUE = map(i, 0, PATH.length, 0, 360);
     stroke(HUE, 255, 255);
     line(PATH[i].x, PATH[i].y, PATH[i - 1].x, PATH[i - 1].y);
 
-    if (ORDER < 6) {
+    if (ORDER < 5) {
       show_number(i, PATH[i].x, PATH[i].y);
     }
   }
 
-  COUNTER += 40;
+  COUNTER += 5;
   if (COUNTER >= PATH.length) {
     COUNTER = 0;
   }
 }
-function draw() {}
 
 // Displays ith index along hilbert curve at location x, y
 function show_number(i, x, y) {
