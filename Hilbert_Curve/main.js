@@ -58,6 +58,7 @@ function hilbert_x_y(i) {
   let index = i & 3;
   let vec = points[index];
 
+  // Loop from 1st-order curve to ORDER-order curve
   for (let j = 1; j < ORDER; j++) {
     // Shift bits right by 2 bits
     i = i >>> 2;
@@ -67,6 +68,7 @@ function hilbert_x_y(i) {
     let temp;
     let len = 2 ** j;
 
+    // Update vector's (x, y) to account for which quadrant it is part of.  Top-left (index = 0) and top-right (index = 3) quadrants need to be rotated
     switch (index) {
       case 0:
         temp = vec.x;
