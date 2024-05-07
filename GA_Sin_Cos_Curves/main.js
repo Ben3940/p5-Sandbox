@@ -22,21 +22,6 @@ function draw_x_axis() {
   draw_sine(DIM / 100);
 }
 
-function draw_sine(step_size) {
-  strokeWeight(5);
-  stroke('purple');
-  const n_samples = floor((width - OFFSET) / step_size);
-  const range = compute_curve(n_samples, sin);
-  for (let i = 0; i < range.length; i++) {
-    const x = i * step_size + OFFSET;
-    const y = range[i];
-    console.log(y);
-    point(x, y);
-  }
-  stroke(255);
-  strokeWeight(1);
-}
-
 function compute_curve(n_samples, curve_func) {
   const step_size = (2 * PI) / n_samples;
   let range_sine = [];
