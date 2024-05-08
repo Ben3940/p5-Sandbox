@@ -18,8 +18,9 @@ function draw() {
   background(0);
   draw_y_axis();
   draw_x_axis();
-  draw_curve();
-  console.log(ga.fitness());
+  draw_curve(TRUE_VALUES);
+  ga.fitness();
+  draw_curve(ga.get_best_candidate(), 'green');
   //ga.fitness();
 }
 
@@ -33,12 +34,12 @@ function draw_x_axis() {
   line(OFFSET, height / 2, width, height / 2);
 }
 
-function draw_curve() {
+function draw_curve(y_values, color = 'purple') {
   strokeWeight(5);
-  stroke('purple');
-  for (let i = 0; i < TRUE_VALUES.length; i++) {
+  stroke(color);
+  for (let i = 0; i < y_values.length; i++) {
     const x = i * STEP_SIZE + OFFSET;
-    const y = map(TRUE_VALUES[i], -1, 1, height, 0);
+    const y = map(y_values[i], -1, 1, height, 0);
     point(x, y);
   }
   stroke(255);
