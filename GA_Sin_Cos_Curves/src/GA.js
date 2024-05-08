@@ -39,7 +39,6 @@ class GA {
     let best_score = 1000;
 
     this.population.forEach((candidate) => {
-      let count = 0;
       let fitness_score = 0;
       for (let i = 0; i < TRUE_VALUES.length; i++) {
         const diff = Math.abs(TRUE_VALUES[i] ** 2 - candidate[i] ** 2);
