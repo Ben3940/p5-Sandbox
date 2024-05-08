@@ -36,13 +36,13 @@ class GA {
 
   fitness() {
     let fitness_scores = [];
-    let best_score = 10000000;
+    let best_score = 1000;
 
     this.population.forEach((candidate) => {
       let count = 0;
       let fitness_score = 0;
       for (let i = 0; i < TRUE_VALUES.length; i++) {
-        const diff = Math.abs(TRUE_VALUES[i] - candidate[i]);
+        const diff = Math.abs(TRUE_VALUES[i] ** 2 - candidate[i] ** 2);
         fitness_score += diff;
       }
       if (fitness_score < best_score) {
