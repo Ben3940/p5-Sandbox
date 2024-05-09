@@ -48,6 +48,21 @@ class GA {
     return this.best_candidate.get_genes();
   }
 
+  fitness() {
+    let best_score = 1000;
+    let total_score = 0;
+    this.population.forEach((candidate) => {
+      const fitness_score = candidate.calculate_fitness(this.true_values);
+
+      if (fitness_score < best_score) {
+        this.best_candidate = candidate;
+      }
+      total_score += fitness_score;
+      this.selection_pool.push(candidate);
+    });
+    return total_score;
+  }
+
   // fitness() {
   //   let best_score = 1000;
   //   let total_score = 0;

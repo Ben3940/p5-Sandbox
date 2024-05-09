@@ -19,8 +19,8 @@ function draw() {
   draw_y_axis();
   draw_x_axis();
   draw_curve(TRUE_VALUES);
-  // ga.fitness();
-  draw_curve(ga.get_ith_candidate_genes(0), 'green');
+  ga.fitness();
+  draw_curve(ga.get_best_candidate_genes(), 'green');
   //ga.fitness();
 }
 

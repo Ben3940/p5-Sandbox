@@ -30,4 +30,17 @@ class Candidate {
       this.genes[i] = random(min_value, max_value);
     }
   }
+
+  calculate_fitness(true_y_labels) {
+    let fitness_score = 0;
+    for (let i = 0; i < true_y_labels.length; i++) {
+      const diff = Math.max(
+        0,
+        1 - Math.abs(true_y_labels[i] ** 2 - this.genes[i] ** 2)
+      );
+      fitness_score += diff;
+    }
+    this.fitness_score = fitness_score;
+    return fitness_score;
+  }
 }
