@@ -36,7 +36,7 @@ class GA {
 
   print_population() {
     this.population.forEach((candidate) => {
-      console.log(candidate);
+      console.log(candidate.get_genes());
     });
   }
 
@@ -44,8 +44,8 @@ class GA {
     return this.population[i].get_genes();
   }
 
-  get_best_candidate() {
-    return this.best_candidate;
+  get_best_candidate_genes() {
+    return this.best_candidate.get_genes();
   }
 
   // fitness() {
