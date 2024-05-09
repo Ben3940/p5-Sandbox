@@ -12,13 +12,25 @@ class GA {
     this.true_values = true_values;
   }
 
+  // init_population() {
+  //   for (let i = 0; i < this.pop_size; i++) {
+  //     let candidate_soln = [];
+  //     for (let j = 0; j < this.n_samples; j++) {
+  //       candidate_soln[j] = random(this.min_value, this.max_value);
+  //     }
+  //     this.population.push(candidate_soln);
+  //   }
+  // }
+
   init_population() {
     for (let i = 0; i < this.pop_size; i++) {
-      let candidate_soln = [];
-      for (let j = 0; j < this.n_samples; j++) {
-        candidate_soln[j] = random(this.min_value, this.max_value);
-      }
-      this.population.push(candidate_soln);
+      const candidate = new Candidate();
+      candidate.initialize_genes(
+        this.n_samples,
+        this.min_value,
+        this.max_value
+      );
+      this.population.push(candidate);
     }
   }
 
@@ -28,54 +40,57 @@ class GA {
     });
   }
 
-  get_ith_candidate(i) {
-    return this.population[i];
+  get_ith_candidate_genes(i) {
+    return this.population[i].get_genes();
   }
 
   get_best_candidate() {
     return this.best_candidate;
   }
 
-  fitness() {
-    let best_score = 1000;
-    let total_score = 0;
-    this.population.forEach((candidate) => {
-      let fitness_score = 0;
-      for (let i = 0; i < TRUE_VALUES.length; i++) {
-        const diff = Math.abs(TRUE_VALUES[i] ** 2 - candidate[i] ** 2);
-        fitness_score += diff;
-      }
-      if (fitness_score < best_score) {
-        this.best_candidate = candidate;
-      }
-      total_score += fitness_score;
-      this.selection_pool.push([fitness_score, candidate]);
-    });
-    return total_score;
-  }
+  // fitness() {
+  //   let best_score = 1000;
+  //   let total_score = 0;
+  //   this.population.forEach((candidate) => {
+  //     let fitness_score = 0;
+  //     for (let i = 0; i < TRUE_VALUES.length; i++) {
+  //       const diff = Math.max(
+  //         0,
+  //         1 - Math.abs(TRUE_VALUES[i] ** 2 - candidate[i] ** 2)
+  //       );
+  //       fitness_score += diff;
+  //     }
 
-  generate_pool(total_score){
-    let marker = 0;
-    let pool = [];
+  //     if (fitness_score < best_score) {
+  //       this.best_candidate = candidate;
+  //     }
+  //     total_score += fitness_score;
+  //     this.selection_pool.push([fitness_score, candidate]);
+  //   });
+  //   return total_score;
+  // }
 
-    this.selection_pool(candidate => {
-      const score = candidate[0];
-      const instances = Math.round(score/total_score, 2) * 100;
-      pool.push([marker, marker + instances, candidate[1]]);
-    })
+  // generate_pool(total_score) {
+  //   let marker = 0;
+  //   let pool = [];
 
-    for (let n = 0; n < this.pop_size; n++){
-      const rand = Math.random() * 100;
-      for (let i = 0; i< pool.length; i++){
-        const cand = pool[i];
-        if (rand >= cand[0] && rand <= cand[1]){
-          
-        }
-      }
-    }
-  }
+  //   this.selection_pool((candidate) => {
+  //     const score = candidate[0];
+  //     const instances = Math.round(score / total_score, 2) * 100;
+  //     pool.push([marker, marker + instances, candidate[1]]);
+  //   });
 
-  selection() {
-    this.selection_pool{}
-  }
+  //   for (let n = 0; n < this.pop_size; n++) {
+  //     const rand = Math.random() * 100;
+  //     for (let i = 0; i < pool.length; i++) {
+  //       const cand = pool[i];
+  //       if (rand >= cand[0] && rand <= cand[1]) {
+  //       }
+  //     }
+  //   }
+  // }
+
+  // selection() {
+  //   this.selection_pool{}
+  // }
 }
