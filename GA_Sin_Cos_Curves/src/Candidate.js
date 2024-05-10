@@ -27,7 +27,7 @@ class Candidate {
 
   initialize_genes(n_genes, min_value, max_value) {
     for (let i = 0; i < n_genes; i++) {
-      this.genes[i] = random(min_value, max_value);
+      this.genes[i] = random(min_value, max_value).toFixed(2);
     }
   }
 

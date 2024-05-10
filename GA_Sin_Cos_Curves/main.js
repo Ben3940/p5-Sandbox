@@ -2,6 +2,7 @@ const DIM = 500;
 const OFFSET = DIM / 10;
 const STEP_SIZE = DIM / 100;
 const DOMAIN_MAX = 2 * Math.PI;
+const POP_SIZE = 10;
 let TRUE_VALUES;
 let N_SAMPLES;
 let ga;
@@ -10,7 +11,7 @@ function setup() {
   createCanvas(DIM, DIM);
   N_SAMPLES = Math.floor((width - OFFSET) / STEP_SIZE);
   TRUE_VALUES = compute_curve(Math.sin);
-  ga = new GA(DIM, N_SAMPLES, 10, 1, -1, TRUE_VALUES);
+  ga = new GA(DIM, N_SAMPLES, POP_SIZE, 1, -1, TRUE_VALUES, 0.02);
   ga.init_population();
 }
 
@@ -18,9 +19,12 @@ function draw() {
   background(0);
   draw_y_axis();
   draw_x_axis();
-  draw_curve(TRUE_VALUES);
   ga.fitness();
+  draw_curve(TRUE_VALUES);
   draw_curve(ga.get_best_candidate_genes(), 'green');
+  ga.generate_pool();
+  ga.selection();
+  frameRate(1);
   //ga.fitness();
 }
 

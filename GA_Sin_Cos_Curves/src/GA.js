@@ -1,26 +1,39 @@
 class GA {
+  DIM;
+  n_samples;
+  pop_size;
+  max_value;
+  min_value;
+  true_values;
   best_candidate;
-  selection_pool = [];
-  population = [];
-  constructor(DIM, n_samples, size, max_value, min_value, true_values) {
+  fitness_pool;
+  selection_pool;
+  population;
+  generation_score;
+  mutation_rate;
+
+  constructor(
+    DIM,
+    n_samples,
+    size,
+    max_value,
+    min_value,
+    true_values,
+    mutation_rate
+  ) {
     this.DIM = DIM;
     this.n_samples = n_samples;
     this.pop_size = size;
-
     this.max_value = max_value;
     this.min_value = min_value;
     this.true_values = true_values;
+    this.mutation_rate = mutation_rate;
+    this.best_candidate = null;
+    this.fitness_pool = [];
+    this.selection_pool = {};
+    this.population = [];
+    this.generation_score = 0;
   }
-
-  // init_population() {
-  //   for (let i = 0; i < this.pop_size; i++) {
-  //     let candidate_soln = [];
-  //     for (let j = 0; j < this.n_samples; j++) {
-  //       candidate_soln[j] = random(this.min_value, this.max_value);
-  //     }
-  //     this.population.push(candidate_soln);
-  //   }
-  // }
 
   init_population() {
     for (let i = 0; i < this.pop_size; i++) {
@@ -49,18 +62,76 @@ class GA {
   }
 
   fitness() {
-    let best_score = 1000;
+    let best_score = -1000;
     let total_score = 0;
+    this.fitness_pool = [];
     this.population.forEach((candidate) => {
       const fitness_score = candidate.calculate_fitness(this.true_values);
 
-      if (fitness_score < best_score) {
+      if (fitness_score > best_score) {
         this.best_candidate = candidate;
       }
       total_score += fitness_score;
-      this.selection_pool.push(candidate);
+      this.fitness_pool.push(candidate);
     });
-    return total_score;
+    this.generate_score = total_score;
+  }
+
+  generate_pool() {
+    let offset = 0;
+    this.selection_pool = {};
+    for (let i = 0; i < this.fitness_pool.length - 1; i++) {
+      const upper_bound = Math.floor(
+        (this.fitness_pool[i].get_fitness_score() / this.generate_score) * 100
+      );
+      this.selection_pool[i] = upper_bound + offset;
+      offset += upper_bound;
+    }
+    // Last candidate gets remainding percentage of pool for selection
+    this.selection_pool[this.fitness_pool.length - 1] = 100;
+  }
+
+  selection() {
+    this.population = [];
+
+    for (let j = 0; j < this.pop_size; j++) {
+      const parent_1_rand = Math.random() * 101;
+      const parent_2_rand = Math.random() * 101;
+
+      let parent_1 = null;
+      let parent_2 = null;
+
+      for (const i in this.selection_pool) {
+        if (parent_1 === null && parent_1_rand < this.selection_pool[i]) {
+          parent_1 = this.fitness_pool[i].get_genes();
+        }
+        if (parent_2 === null && parent_2_rand < this.selection_pool[i]) {
+          parent_2 = this.fitness_pool[i].get_genes();
+        }
+        if (parent_1 !== null && parent_2 !== null) {
+          break;
+        }
+      }
+
+      const split = Math.floor(this.n_samples / 2);
+      let child = new Candidate();
+      let genes = parent_1.slice(0, split).concat(parent_2.slice(split));
+      genes = this.mutation(genes);
+      console.log(genes);
+      child.set_genes(genes);
+      this.population.push(child);
+    }
+  }
+
+  mutation(genes) {
+    for (let i = 0; i < genes.length; i++) {
+      const rand = Math.random();
+      if (rand < this.mutation_rate) {
+        const mutated_value = genes[i] + Math.random() * 0.25;
+        genes[i] = Math.round(Math.min(this.max_value, mutated_value, 2));
+      }
+    }
+    return genes;
   }
 
   // fitness() {
