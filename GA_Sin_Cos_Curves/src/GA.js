@@ -77,7 +77,7 @@ class GA {
       if (fitness_score > best_score) {
         this.best_candidate = candidate;
       }
-      if (fitness_score >= this.n_samples - 0.01) {
+      if (fitness_score === this.n_samples) {
         this.best_candidate = candidate;
         console.log('STOPPING');
         this.contin = false;
@@ -154,7 +154,11 @@ class GA {
           continue;
         } else {
           genes[i] =
-            Math.random() * (this.max_value - this.min_value) + this.min_value;
+            Math.round(
+              (Math.random() * (this.max_value - this.min_value) +
+                this.min_value) *
+                100
+            ) / 100;
         }
         //  else if (genes[i] < this.true_values[i]) {
         //   genes[i] += Math.min(

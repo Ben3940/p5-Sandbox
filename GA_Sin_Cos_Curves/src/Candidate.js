@@ -27,17 +27,20 @@ class Candidate {
 
   initialize_genes(n_genes, min_value, max_value) {
     for (let i = 0; i < n_genes; i++) {
-      this.genes[i] = random(min_value, max_value).toFixed(2);
+      this.genes[i] =
+        Math.round(
+          (Math.random() * (max_value - min_value) + min_value) * 100
+        ) / 100;
     }
   }
 
   calculate_fitness(true_y_labels) {
     let fitness_score = 0;
     for (let i = 0; i < true_y_labels.length; i++) {
-      const diff = Math.max(
-        0,
-        1 - Math.abs(true_y_labels[i] ** 2 - this.genes[i] ** 2)
-      );
+      const inter_value =
+        Math.round(Math.abs(true_y_labels[i] ** 2 - this.genes[i] ** 2) * 100) /
+        100;
+      const diff = Math.max(0, 1 - inter_value);
       fitness_score += diff;
     }
     this.fitness_score = fitness_score;

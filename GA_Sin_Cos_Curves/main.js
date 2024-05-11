@@ -2,7 +2,7 @@ const DIM = 500;
 const OFFSET = DIM / 10;
 const STEP_SIZE = DIM / 100;
 const DOMAIN_MAX = 2 * Math.PI;
-const POP_SIZE = 10;
+const POP_SIZE = 50;
 let TRUE_VALUES;
 let N_SAMPLES;
 let ga;
@@ -27,7 +27,7 @@ function draw() {
     ga.selection();
   }
   draw_curve(ga.get_best_candidate_genes(), 'green');
-
+  frameRate(60);
   //ga.fitness();
 }
 
@@ -57,7 +57,7 @@ function compute_curve(curve_func) {
   const step_size = DOMAIN_MAX / N_SAMPLES;
   let range_sine = [];
   for (let i = 0; i < DOMAIN_MAX; i += step_size) {
-    const y = curve_func(i);
+    const y = Math.round(curve_func(i) * 100) / 100;
     range_sine.push(y);
   }
   return range_sine;
