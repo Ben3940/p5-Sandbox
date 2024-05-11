@@ -27,7 +27,7 @@ function draw() {
     ga.selection();
   }
   draw_curve(ga.get_best_candidate_genes(), 'green');
-  frameRate(10);
+
   //ga.fitness();
 }
 

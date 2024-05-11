@@ -77,14 +77,16 @@ class GA {
       if (fitness_score > best_score) {
         this.best_candidate = candidate;
       }
+      if (fitness_score >= this.n_samples - 0.01) {
+        this.best_candidate = candidate;
+        console.log('STOPPING');
+        this.contin = false;
+        return;
+      }
       total_score += fitness_score;
       this.fitness_pool.push(candidate);
     });
     this.generate_score = total_score;
-    if (total_score === this.pop_size * this.n_samples) {
-      console.log('STOPPING');
-      this.contin = false;
-    }
   }
 
   generate_pool() {
@@ -125,10 +127,18 @@ class GA {
 
       const split = Math.floor(this.n_samples / 2);
       let child = new Candidate();
-      let genes = parent_1
-        .slice(0, split)
-        .concat(parent_2.slice(split))
-        .map(Number);
+      // let genes = parent_1
+      //   .slice(0, split)
+      //   .concat(parent_2.slice(split))
+      //   .map(Number);
+      let genes = [];
+      for (let i = 0; i < parent_1.length; i++) {
+        if (i % 2 === 0) {
+          genes[i] = parent_1[i];
+        } else {
+          genes[i] = parent_2[i];
+        }
+      }
 
       genes = this.mutation(genes);
       child.set_genes(genes);
@@ -140,11 +150,28 @@ class GA {
     for (let i = 0; i < genes.length; i++) {
       const rand = Math.random();
       if (rand < this.mutation_rate) {
-        let mutated_value = this.true_values[i]; //genes[i] + Math.random() * 0.05;
+        if (genes[i] == this.true_values[i]) {
+          continue;
+        } else {
+          genes[i] =
+            Math.random() * (this.max_value - this.min_value) + this.min_value;
+        }
+        //  else if (genes[i] < this.true_values[i]) {
+        //   genes[i] += Math.min(
+        //     (this.true_values[i] - genes[i]) * Math.random() * 0.5,
+        //     this.max_value
+        //   );
+        // } else if (genes[i] > this.true_values[i]) {
+        //   genes[i] -= Math.max(
+        //     (genes[i] - this.true_values[i]) * Math.random() * 0.5,
+        //     this.min_value
+        //   );
+        // }
+        // let mutated_value = this.true_values[i]; //genes[i] + Math.random() * 0.05;
 
-        mutated_value = Math.min(this.max_value, mutated_value);
+        // mutated_value = Math.min(this.max_value, mutated_value);
 
-        genes[i] = mutated_value;
+        // genes[i] = mutated_value;
       }
     }
     return genes;
