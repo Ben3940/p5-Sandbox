@@ -11,7 +11,7 @@ function setup() {
   createCanvas(DIM, DIM);
   N_SAMPLES = Math.floor((width - OFFSET) / STEP_SIZE);
   TRUE_VALUES = compute_curve(Math.sin);
-  ga = new GA(DIM, N_SAMPLES, POP_SIZE, 1, -1, TRUE_VALUES, 0.02);
+  ga = new GA(DIM, N_SAMPLES, POP_SIZE, 1, -1, TRUE_VALUES, 0.05);
   ga.init_population();
 }
 
@@ -19,12 +19,15 @@ function draw() {
   background(0);
   draw_y_axis();
   draw_x_axis();
-  ga.fitness();
   draw_curve(TRUE_VALUES);
+
+  if (ga.should_continue()) {
+    ga.fitness();
+    ga.generate_pool();
+    ga.selection();
+  }
   draw_curve(ga.get_best_candidate_genes(), 'green');
-  ga.generate_pool();
-  ga.selection();
-  frameRate(1);
+  frameRate(10);
   //ga.fitness();
 }
 

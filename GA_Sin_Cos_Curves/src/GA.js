@@ -11,6 +11,7 @@ class GA {
   population;
   generation_score;
   mutation_rate;
+  contin;
 
   constructor(
     DIM,
@@ -33,6 +34,7 @@ class GA {
     this.selection_pool = {};
     this.population = [];
     this.generation_score = 0;
+    this.contin = true;
   }
 
   init_population() {
@@ -51,6 +53,10 @@ class GA {
     this.population.forEach((candidate) => {
       console.log(candidate.get_genes());
     });
+  }
+
+  should_continue() {
+    return this.contin;
   }
 
   get_ith_candidate_genes(i) {
@@ -75,6 +81,10 @@ class GA {
       this.fitness_pool.push(candidate);
     });
     this.generate_score = total_score;
+    if (total_score === this.pop_size * this.n_samples) {
+      console.log('STOPPING');
+      this.contin = false;
+    }
   }
 
   generate_pool() {
@@ -95,17 +105,17 @@ class GA {
     this.population = [];
 
     for (let j = 0; j < this.pop_size; j++) {
-      const parent_1_rand = Math.random() * 101;
-      const parent_2_rand = Math.random() * 101;
+      const parent_1_rand = Math.random() * 100;
+      const parent_2_rand = 100 - parent_1_rand;
 
       let parent_1 = null;
       let parent_2 = null;
 
       for (const i in this.selection_pool) {
-        if (parent_1 === null && parent_1_rand < this.selection_pool[i]) {
+        if (parent_1 === null && parent_1_rand <= this.selection_pool[i]) {
           parent_1 = this.fitness_pool[i].get_genes();
         }
-        if (parent_2 === null && parent_2_rand < this.selection_pool[i]) {
+        if (parent_2 === null && parent_2_rand <= this.selection_pool[i]) {
           parent_2 = this.fitness_pool[i].get_genes();
         }
         if (parent_1 !== null && parent_2 !== null) {
@@ -115,9 +125,12 @@ class GA {
 
       const split = Math.floor(this.n_samples / 2);
       let child = new Candidate();
-      let genes = parent_1.slice(0, split).concat(parent_2.slice(split));
+      let genes = parent_1
+        .slice(0, split)
+        .concat(parent_2.slice(split))
+        .map(Number);
+
       genes = this.mutation(genes);
-      console.log(genes);
       child.set_genes(genes);
       this.population.push(child);
     }
@@ -127,8 +140,11 @@ class GA {
     for (let i = 0; i < genes.length; i++) {
       const rand = Math.random();
       if (rand < this.mutation_rate) {
-        const mutated_value = genes[i] + Math.random() * 0.25;
-        genes[i] = Math.round(Math.min(this.max_value, mutated_value, 2));
+        let mutated_value = this.true_values[i]; //genes[i] + Math.random() * 0.05;
+
+        mutated_value = Math.min(this.max_value, mutated_value);
+
+        genes[i] = mutated_value;
       }
     }
     return genes;
