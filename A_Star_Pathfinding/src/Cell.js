@@ -47,6 +47,6 @@ class Cell {
         else {
             fill(0);
         }
-        rect(this.x, this.y, this.cell_width, this.cell_width);
+        rect(this.x * this.cell_width, this.y * this.cell_width, this.cell_width, this.cell_width);
     }
 }
