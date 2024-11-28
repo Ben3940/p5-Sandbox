@@ -1,8 +1,7 @@
 class Cell {
-    constructor(x, y, cell_width, start=false, end=false){
+    constructor(x, y, start=false, end=false){
         this.x = x;
         this.y = y;
-        this.cell_width = cell_width;
         this.visited = false;
         this.start = start;
         this.end = end;
@@ -36,7 +35,15 @@ class Cell {
         this.end = true;
     }
 
-    show(){
+    is_start(){
+        return this.start;
+    }
+
+    is_end(){
+        return this.end;
+    }
+
+    show(cell_width){
         if(this.start){
             fill(0, 255, 0);
         } else if(this.end){
@@ -47,6 +54,6 @@ class Cell {
         else {
             fill(0);
         }
-        rect(this.x * this.cell_width, this.y * this.cell_width, this.cell_width, this.cell_width);
+        rect(this.x * cell_width, this.y * cell_width, cell_width, cell_width);
     }
 }

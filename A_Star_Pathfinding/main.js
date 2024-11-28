@@ -1,5 +1,7 @@
 const DIM = 900;
-const GRID = new Grid(30, 30, DIM / 30);
+const ROWS = 30;
+const COLS = 30;
+const GRID = new Grid(ROWS, COLS, DIM / ROWS);
 function setup() {
   createCanvas(DIM, DIM);
   stroke(255);

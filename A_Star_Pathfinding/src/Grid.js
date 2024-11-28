@@ -10,9 +10,9 @@ class Grid {
     }
 
     initialize(){
-        for (let y = 0; y < this.rows; y++) {
-            for (let x = 0; x < this.cols; x++) {
-                const cell = new Cell(x, y, this.cell_width);
+        for (let x = 0; x < this.rows; x++) {
+            for (let y = 0; y < this.cols; y++) {
+                const cell = new Cell(x, y);
                 this.grid.push(cell);
             }
         }
@@ -24,10 +24,10 @@ class Grid {
         const x = Math.floor(Math.random() * this.rows);
         const y = Math.floor(Math.random() * this.cols);
         const start_pos = this.convert_x_y_to_index(x, y);
-        const end_pos = Math.max(this.grid.length - start_pos, 0);
+        const end_pos = this.grid.length - start_pos;
         this.start_pos = start_pos;
         this.end_pos = end_pos;
-        this.model.set_pos(x, y);
+        this.model.set_pos(...this.convert_index_to_x_y(start_pos));
         this.grid[start_pos].set_as_start(true);
         this.grid[end_pos].set_as_end(true);
     }
@@ -41,11 +41,15 @@ class Grid {
         return x * this.cols + y;
     }
 
+    convert_index_to_x_y(index){
+        return [Math.floor(index / this.cols), index % this.cols];
+    }
+
     show() {
         this.grid.forEach((cell) => {
-            cell.show();
+            cell.show(this.cell_width);
         });
-        fill(0, 0, 255);
-        rect(this.model.get_x() * this.cell_width, this.model.get_y() * this.cell_width, this.cell_width, this.cell_width);
+        this.model.show(this.cell_width);
+        
     }
 }
