@@ -1,22 +1,9 @@
-class Cell {
-    constructor(x, y, start=false, end=false){
-        this.x = x;
-        this.y = y;
+class Cell extends Entity{
+    constructor(x, y, cols, start=false, end=false){
+        super(x, y, cols)
         this.visited = false;
         this.start = start;
         this.end = end;
-    }
-
-    get_coordinates(){
-        return [this.x, this.y];
-    }
-
-    set_x(x){
-        this.x = x;
-    }
-
-    set_y(y){
-        this.y = y;
     }
 
     get_visited(){
@@ -49,7 +36,7 @@ class Cell {
         } else if(this.end){
             fill(255, 0, 0);  
         } else if(this.visited){
-            fill(255);
+            fill(50, 125, 255);
         } 
         else {
             fill(0);
