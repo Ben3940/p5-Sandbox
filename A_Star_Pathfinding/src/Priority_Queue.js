@@ -1,19 +1,28 @@
 class Element {
-    constructor(value, priority) {
-        this.value = value;
+    constructor(cell, cost, priority) {
+        this.cell = cell;
+        this.cost = cost;
         this.priority = priority;
     }
 
-    get_value() {
-        return this.value;
+    get_cell() {
+        return this.cell;
+    }
+
+    get_cost() {
+        return this.cost;
     }
 
     get_priority() {
         return this.priority;
     }
 
-    set_value(value) {
-        this.value = value;
+    set_cost(cost) {
+        this.cost = cost;
+    }
+
+    set_cost(cost) {
+        this.cost = cost;
     }
 
     set_priority(priority) {
@@ -26,11 +35,11 @@ class Priority_Queue {
         this.queue = [];
     }
 
-    enqueue(value, priority) {
-        const element = new Element(value, priority);
+    enqueue(cell, cost, priority) {
+        const element = new Element(cell, cost, priority);
         let contain = false;
         for(let i = 0; i < this.queue.length; i++){
-            if(this.queue[i].get_priority() > priority){
+            if(this.queue[i].get_priority() >= priority){
                 this.queue.splice(i, 0, element);
                 contain = true;
                 break;
@@ -43,11 +52,11 @@ class Priority_Queue {
     }
 
     dequeue() {
-        this.is_empty() ? null : this.queue.shift().get_value();
+        return this.is_empty() ? null : this.queue.shift();
     }
 
     peek() {
-        this.is_empty() ? null : this.queue[0].get_value();
+        return this.is_empty() ? null : this.queue[0];
     }
 
     is_empty() {
@@ -56,7 +65,7 @@ class Priority_Queue {
 
     print_queue(){
         this.queue.forEach((element) => {
-            console.log(element.get_value());
+            console.log(element);
         });
     }
 }

@@ -18,7 +18,7 @@ class Entity {
     }
 
     get_index(){
-        return this.x * this.cols + this.y;
+        return this.convert_x_y_to_index();
     }
 
     set_x(x){
@@ -37,5 +37,14 @@ class Entity {
     set_pos_from_index(index){
         this.x = Math.floor(index / this.cols);
         this.y = index % this.cols;
+    }
+
+    convert_x_y_to_index(x=this.x, y=this.y){
+        
+        return y * this.cols + x;
+    }
+
+    convert_index_to_x_y(index){
+        return [Math.floor(index / this.cols), index % this.cols];
     }
 }
