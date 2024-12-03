@@ -1,7 +1,7 @@
 const DIM = 900;
 const ROWS = 30;
 const COLS = 30;
-const GRID = new Grid(ROWS, COLS, DIM / ROWS);
+const GRID = new Grid(COLS, DIM / ROWS);
 let iters = 0;
 function setup() {
   createCanvas(DIM, DIM);

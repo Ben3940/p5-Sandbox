@@ -1,9 +1,36 @@
-class Cell extends Entity{
+class Cell{
     constructor(x, y, cols, start=false, end=false){
-        super(x, y, cols)
-        this.visited = false;
+        this.x = x;
+        this.y = y;
+        this.cols = cols;
         this.start = start;
         this.end = end;
+        this.visited = false;
+    }
+
+    get_x(){
+        return this.x;
+    }
+
+    get_y(){
+        return this.y;
+    }
+
+    get_pos(){
+        return [this.x, this.y];
+    }
+
+    set_x(x){
+        this.x = x;
+    }
+
+    set_y(y){
+        this.y = y;
+    }
+
+    set_pos(x, y){
+        this.x = x;
+        this.y = y;
     }
 
     get_visited(){
