@@ -7,7 +7,6 @@ class Model {
         this.dim = dim;
         this.open_set = new Priority_Queue();
         this.came_from = new Map();
-        this.g_score = new Map();
         this.f_score = new Map();
         this.grid_size = grid_size;
         this.directions = [[0, -1], [1, 0], [0, 1], [-1, 0]]; // up, right, down, left
@@ -24,23 +23,16 @@ class Model {
         return [bound_x, bound_y];
     }
 
-    add_g_score(coordinates, score){
-        this.g_score.set(coordinates, score);
-    } 
+    cost(x, y, grid){
+        const cell = grid[x][y].get_cell();
+        const score = cell.get_g() + this.heuristic(x, y)
+        const f = cost([x, y], score);
 
-    get_g_score(coordinates){
-        return this.g_score.get(coordinates);
     }
 
-    cost(x, y){
-        const index = this.convert_x_y_to_index(x, y);
-        const score = this.get_g_score(index) + this.heuristic(x, y)
-        this.f_score.set(index, score);
-    }
-
+    // Manhattan distance
     heuristic(x, y){
-        const [end_x, end_y] = this.convert_index_to_x_y(this.end_index);
-        return Math.sqrt((end_x - x)^2 + (end_y - y)^2);
+        return Math.abs(x - this.end_x) + Math.abs(y - this.end_y);
     }
 
     show(cell_width){
@@ -99,7 +91,8 @@ class Model {
             return;
         }
         neighbor.set_visited(true);
-        this.open_set.enqueue(neighbor, 0, 1000 - neighbor.get_x());
+        neighbor.set_g(neighbor.get_g() + 1);
+        this.open_set.enqueue(neighbor, 0, neighbor.get_g());
         
     }
 

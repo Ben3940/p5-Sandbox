@@ -30,8 +30,8 @@ class Grid {
         this.start_pos = start_pos;
         this.end_pos = end_pos;
         this.model = new Model(x, y, end_pos[0], end_pos[1], this.dim, this.grid_size);
+        this.grid[x][y].set_g(0);
         this.model.start(this.grid[x][y], 0, 100);
-        this.model.add_g_score(start_pos, 0);
         this.grid[x][y].set_as_start(true);
         this.grid[end_pos[0]][end_pos[1]].set_as_end(true);
     }

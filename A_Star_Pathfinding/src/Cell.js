@@ -6,6 +6,8 @@ class Cell{
         this.start = start;
         this.end = end;
         this.visited = false;
+        this.g = Infinity;
+        this.f = Infinity;
     }
 
     get_x(){
@@ -20,6 +22,14 @@ class Cell{
         return [this.x, this.y];
     }
 
+    get_g(){
+        return this.g;
+    }
+
+    get_f(){
+        return this.f;
+    }
+
     set_x(x){
         this.x = x;
     }
@@ -31,6 +41,14 @@ class Cell{
     set_pos(x, y){
         this.x = x;
         this.y = y;
+    }
+
+    set_g(g){
+        this.g = g;
+    }
+
+    set_f(f){
+        this.f = f;
     }
 
     get_visited(){

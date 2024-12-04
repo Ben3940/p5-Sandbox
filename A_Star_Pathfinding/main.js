@@ -12,5 +12,5 @@ function draw() {
     background(0);
     GRID.show();
     GRID.update();
-    frameRate(7); 
+    frameRate(20); 
 }
