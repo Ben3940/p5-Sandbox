@@ -9,12 +9,8 @@ function setup() {
   GRID.initialize();
 }
 function draw() {
-  if (iters < 3){
     background(0);
     GRID.show();
     GRID.update();
-    frameRate(1);
-    iters++;  
-  }
-  
+    frameRate(7); 
 }

@@ -10,7 +10,7 @@ class Model {
         this.g_score = new Map();
         this.f_score = new Map();
         this.grid_size = grid_size;
-        this.directions = [-dim, 1, dim, -1]; // up, right, down, left
+        this.directions = [[0, -1], [1, 0], [0, 1], [-1, 0]]; // up, right, down, left
     }
 
     bound_self(){
@@ -51,16 +51,22 @@ class Model {
         rect(x * cell_width, y * cell_width, cell_width, cell_width);
     }
 
-    check_neighbors(current_index, grid){
-        
+    check_neighbors(current, grid){
+        const cell = current.get_cell();
+        const neighbors = [];
         for(const direction of this.directions){
-            let neighbor_index = current_index + direction;
-            if(neighbor_index === this.open_set.peek().get_index()){
+            const [dx, dy] = direction;
+            const [new_x, new_y] = this.bound_x_y(cell.get_x() + dx, cell.get_y() + dy);
+            if (new_x === cell.get_x() && new_y === cell.get_y()){
                 continue;
             }
-            const neighbor = grid[neighbor_index];
-            this.cost();
+            const neighbor = grid[new_x][new_y];
+            if(neighbor.get_visited()){
+                continue;
+            }
+            neighbors.push(neighbor);
         }
+        return neighbors;
     }
 
     start(cell, cost, priority){
@@ -86,14 +92,14 @@ class Model {
         return new_index;
     }
 
-    move(current, grid){
-        const next_x = current.get_cell().get_x();
-        const next_y = current.get_cell().get_y() + 1;
-        const [x, y] = this.bound_x_y(next_x, next_y);
-        if(x === this.end_x && y === this.end_y){
+    move(neighbors, grid){
+        console.log("Neighbors", neighbors);
+        const neighbor = neighbors[0];
+        if(neighbor.is_end()){
             return;
         }
-        this.open_set.enqueue(grid[x][y], 0, current.get_priority() - 1);
+        neighbor.set_visited(true);
+        this.open_set.enqueue(neighbor, 0, 1000 - neighbor.get_x());
         
     }
 
@@ -102,6 +108,7 @@ class Model {
             return;
         }
         const current = this.open_set.dequeue();
-        this.move(current, grid, dim, dim);
+        const neighbors = this.check_neighbors(current, grid);
+        this.move(neighbors, grid, dim, dim);
     }
 }
