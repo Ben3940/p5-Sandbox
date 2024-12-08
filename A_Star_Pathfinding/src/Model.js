@@ -10,6 +10,7 @@ class Model {
         this.f_score = new Map();
         this.grid_size = grid_size;
         this.directions = [[0, -1], [1, 0], [0, 1], [-1, 0]]; // up, right, down, left
+        this.steps = 0;
     }
 
     bound_self(){
@@ -27,7 +28,6 @@ class Model {
         const cell = grid[x][y].get_cell();
         const score = cell.get_g() + this.heuristic(x, y)
         const f = cost([x, y], score);
-
     }
 
     // Manhattan distance
@@ -53,10 +53,11 @@ class Model {
                 continue;
             }
             const neighbor = grid[new_x][new_y];
-            if(neighbor.get_visited()){
-                continue;
+            if(this.steps < neighbor.get_g()){
+                neighbor.set_g(this.steps);
+                this.open_set.enqueue(neighbor, 0, this.steps);
+                // neighbors.push(neighbor);
             }
-            neighbors.push(neighbor);
         }
         return neighbors;
     }
@@ -66,33 +67,15 @@ class Model {
         this.open_set.enqueue(cell, cost, priority);
     }
 
-    bound_index(index, step, dim, up_down){
-        const new_index = index + step;
-        if (up_down){
-            if(new_index < 0 || new_index >= this.grid_size){
-                return index;
-            }
-        } else {
-            const col_min = Math.floor(index / dim) * dim;
-            const col_max = col_min + dim;
-            console.log("Col min", col_min);
-            console.log("Col max", col_max);
-            if(new_index < col_min || new_index >= col_max){
-                return index;
-            }   
-        }
-        return new_index;
-    }
-
-    move(neighbors, grid){
-        console.log("Neighbors", neighbors);
-        const neighbor = neighbors[0];
+    move(){
+        const neighbor = this.open_set.dequeue().get_cell();
+        
         if(neighbor.is_end()){
             return;
         }
         neighbor.set_visited(true);
-        neighbor.set_g(neighbor.get_g() + 1);
         this.open_set.enqueue(neighbor, 0, neighbor.get_g());
+        this.steps++;
         
     }
 
@@ -101,7 +84,10 @@ class Model {
             return;
         }
         const current = this.open_set.dequeue();
-        const neighbors = this.check_neighbors(current, grid);
-        this.move(neighbors, grid, dim, dim);
+        const [x, y] = current.get_cell().get_pos();
+        
+        grid[x][y].set_visited(true);
+        this.check_neighbors(current, grid);
+        this.steps++;
     }
 }
